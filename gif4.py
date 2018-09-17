@@ -72,3 +72,17 @@ imageio.mimsave('./anim1.gif', image, duration=dt)
 #imageio.mimsave(exportname, frames, format='GIF', duration=5)
 
 # https://www.programcreek.com/python/example/104522/imageio.mimsave
+
+
+
+"""
+# https://stackoverflow.com/questions/20104318/drawing-anti-aliased-lines-on-tkinter-canvas-in-python
+
+import tkinter as tk
+#from Tkinter import *
+master = tk.Tk()
+w = tk.Canvas(master, width=800, height=600)
+w.pack()
+w.create_line(100, 100, 400, 300, width=5)
+tk.mainloop()
+"""
