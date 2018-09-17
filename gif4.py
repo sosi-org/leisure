@@ -24,7 +24,7 @@ with imageio.get_writer('./anim1.gif', mode='I') as writer:
 """
 
 #nframes = 15
-dt = 0.02
+dt = 0.02/1.0
 cycles = 1.0
 LOOP_BACKnFORTH = False
 #resolution
