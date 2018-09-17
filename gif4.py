@@ -134,13 +134,13 @@ for i in range(nframes):
         #mxx, myy = xx + np.sin(phixy) , yy + np.cos(phixy)
         mxx, myy = xx + np.sin((xx+t)*RADIANS) * 0.1 , yy #+ np.cos(phixy)
 
-        v = (np.sin(mxx*RADIANS*sp_frq + phix)+np.cos(myy*RADIANS*sp_frq + phiy))
+        v = (np.sin(mxx*RADIANS*sp_frq + phix)+np.cos(myy*RADIANS*sp_frq + phiy*0))
         #v = (np.sin(xx*RADIANS*sp_frq + phix) **2 +np.cos(yy*RADIANS*sp_frq + phiy) **2)-1.0
         #v = np.clip(v, 0,1)
         #v = clip2(v,0.5,0.7)
         #v = clip3(v,0.5,0.55,0.6)
         #v = clip20(v, [(0.5,0.8)])
-        v = clip20(v, [(-2.5,-1.7), (-0.3,-0.1), (0.5,0.8)])
+        v = clip20(v, [(-2.5,-1.8), (-0.3,-0.1), (0.5,0.8)])
         #print(np.min(np.min(v)),  np.max(np.max(v)))
         #v = np.clip(np.abs(v*2), 0.5,0.7)
 
