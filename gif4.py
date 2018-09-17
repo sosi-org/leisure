@@ -2,6 +2,22 @@
 import imageio
 # https://imageio.github.io/
 
+"""
+
+pip3 install scikit-image
+
+pip3 install Pillow
+pip3 install images2gif
+pip3 install imageio
+pip3 install visvis
+pip3 install scikit-image
+
+"""
+
+#import scipy.ndimage
+#from skimage.transform import resize
+import skimage.transform
+
 import numpy as np
 import math
 
@@ -63,8 +79,10 @@ def clip3(mat, vmin, vmid, vmax):
 dt = 0.02/1.0
 cycles = 1.0
 LOOP_BACKnFORTH = False
+DECIMATION = 2
 #resolution
-nx, ny = (100, 100)
+rx, ry = (100, 100)
+nx, ny = (rx*DECIMATION, ry*DECIMATION)
 
 nframes = int(cycles/dt + 0.00000001)
 print(nframes, "frames")
@@ -73,11 +91,14 @@ x0 = np.linspace(0, 1, nx)
 y0 = np.linspace(0, 1, ny)
 
 xx,yy = np.meshgrid(x0, y0)
-image = np.zeros((nframes, nx,ny,3), dtype=np.uint8)
+image = np.zeros((nframes, rx,ry,3), dtype=np.uint8)
+#image_up = np.zeros((nframes, nx*DECIMATION,ny*DECIMATION,3), dtype=float)
+print("downsampling from ", (nx,ny), "to", (rx,ry))
 for i in range(nframes):
     #image[i, 10:20+i,10:20+i,1] = 120
     #image[i, 10:20+i,10:20+i,1] = 120
     for rgbi in range(3):
+
         t_linear = i*dt
         tb = int(i*dt)
         tr = (i*dt) % 1.0
@@ -109,7 +130,19 @@ for i in range(nframes):
         v = clip20(v, 0.5,0.8)
         #print(np.min(np.min(v)),  np.max(np.max(v)))
         #v = np.clip(np.abs(v*2), 0.5,0.7)
-        image[i, :,:, rgbi] = np.floor(v*255)
+
+
+        #image_up[:,:, rbgi] = v
+
+        #upsampled = scipy.ndimage.zoom(v, DECIMATION, order=3)
+        #downsampled = skimage.transform.resize(v, (rx,ry), anti_aliasing=True)        #  mode='constant'
+        downsampled = skimage.transform.downscale_local_mean(v, (DECIMATION, DECIMATION))
+        #print(v.shape, downsampled.shape, "huh")
+        print(i, end="", flush=True)
+
+        image[i, :,:, rgbi] = np.floor(downsampled*255)
+
+print()
 
 imageio.mimsave('./anim1.gif', image, duration=dt)
 
@@ -118,7 +151,7 @@ imageio.mimsave('./anim1.gif', image, duration=dt)
 
 # https://www.programcreek.com/python/example/104522/imageio.mimsave
 
-
+# http://scikit-image.org/docs/dev/auto_examples/transform/plot_rescale.html
 
 """
 # https://stackoverflow.com/questions/20104318/drawing-anti-aliased-lines-on-tkinter-canvas-in-python
