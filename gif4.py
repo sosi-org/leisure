@@ -61,8 +61,9 @@ for i in range(nframes):
 
         phix, phiy = phi, phi
 
-        phixy = np.arctan2(xx,yy)
-        mxx, myy = xx + np.sin(phixy) , yy + np.cos(phixy)
+        phixy = np.arctan2(xx-0.5,yy-0.5)
+        #mxx, myy = xx + np.sin(phixy) , yy + np.cos(phixy)
+        mxx, myy = xx + np.sin((xx+t)*RADIANS) * 0.1 , yy #+ np.cos(phixy)
 
         v = (np.sin(mxx*RADIANS*sp_frq + phix)+np.cos(myy*RADIANS*sp_frq + phiy))
         #v = (np.sin(xx*RADIANS*sp_frq + phix) **2 +np.cos(yy*RADIANS*sp_frq + phiy) **2)-1.0
