@@ -151,9 +151,13 @@ for i in range(nframes):
         _RED, _GREEN, _BLUE = 0,1,2
         rg = [(-2.5,-1.8),(-0.3,-0.1), (0.5,0.8)]
         if rgbi == _RED:
-            v = clip20(v, rg)
+            v = clip20(v, [rg[0],rg[2]])
+        elif rgbi == _GREEN:
+            v = clip20(v, rg[2:])
+        elif rgbi == _BLUE:
+            v = clip20(v, rg[1:]) * 0.7
         else:
-            v = clip20(v, rg[1:])
+            raise NotImplemented()
 
 
         #image_up[:,:, rbgi] = v
