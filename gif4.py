@@ -26,9 +26,13 @@ with imageio.get_writer('./anim1.gif', mode='I') as writer:
 #nframes = 15
 dt = 0.02
 cycles = 1.0
+LOOP_BACKnFORTH = False
+#resolution
+nx, ny = (100, 100)
+
 nframes = int(cycles/dt + 0.00000001)
 print(nframes, "frames")
-nx, ny = (100, 100)
+
 x0 = np.linspace(0, 1, nx)
 y0 = np.linspace(0, 1, ny)
 
@@ -38,18 +42,27 @@ for i in range(nframes):
     #image[i, 10:20+i,10:20+i,1] = 120
     #image[i, 10:20+i,10:20+i,1] = 120
     for rgbi in range(3):
-        t = i*dt
+        t_linear = i*dt
         tb = int(i*dt)
         tr = (i*dt) % 1.0
-        t010 = 1.0 - math.fabs(1.0-t*2.0)
+        t_loopy = 1.0 - math.fabs(1.0-t_linear*2.0)
+
+        if LOOP_BACKnFORTH:
+            t = t_loopy
+        else:
+            # periodic without liooping back and forth
+            t = t_linear
 
 
-        sp_frq = 3.0
+        sp_frq = 3.0/2.0
 
         RADIANS = np.pi * 2
-        phi = t010 * RADIANS * 0.3
+        phi = t * RADIANS * 1.0 #0.3
 
-        v = (np.sin(xx*RADIANS*sp_frq)+np.cos(yy*RADIANS*sp_frq + phi))
+        phix, phiy = phi, phi
+
+        #v = (np.sin(xx*RADIANS*sp_frq + phix)+np.cos(yy*RADIANS*sp_frq + phiy))
+        v = (np.sin(xx*RADIANS*sp_frq + phix) **2 +np.cos(yy*RADIANS*sp_frq + phiy) **2)-1.0
         v = np.clip(v, 0,1)
         image[i, :,:, rgbi] = np.floor(v*255)
 
