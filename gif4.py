@@ -61,8 +61,11 @@ for i in range(nframes):
 
         phix, phiy = phi, phi
 
-        #v = (np.sin(xx*RADIANS*sp_frq + phix)+np.cos(yy*RADIANS*sp_frq + phiy))
-        v = (np.sin(xx*RADIANS*sp_frq + phix) **2 +np.cos(yy*RADIANS*sp_frq + phiy) **2)-1.0
+        phixy = np.arctan2(xx,yy)
+        mxx, myy = xx + np.sin(phixy) , yy + np.cos(phixy)
+
+        v = (np.sin(mxx*RADIANS*sp_frq + phix)+np.cos(myy*RADIANS*sp_frq + phiy))
+        #v = (np.sin(xx*RADIANS*sp_frq + phix) **2 +np.cos(yy*RADIANS*sp_frq + phiy) **2)-1.0
         v = np.clip(v, 0,1)
         image[i, :,:, rgbi] = np.floor(v*255)
 
