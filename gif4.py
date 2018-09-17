@@ -23,6 +23,42 @@ with imageio.get_writer('./anim1.gif', mode='I') as writer:
         writer.append_data(image[i])
 """
 
+
+def clip2(mat, vmin, vmax):
+    v =  np.clip(mat, vmin, vmax)
+    v = v - vmin
+    v = v / (vmax - vmin)
+    return v
+
+def clip20(mat, vmin, vmax):
+    assert vmin < vmax
+
+    """
+    v1 =  (mat >= vmin) * mat + \
+          (mat < vmin) * 0
+
+    v2 =  (mat < vmax) * mat + \
+          (mat >= vmax) * 0
+    #v = v1 + v2
+    """
+
+    msk = np.logical_and(mat >= vmin, mat < vmax)
+    v =  msk * mat
+
+    v = v - vmin
+    v = v / (vmax - vmin)
+
+    #return v * msk
+    return msk
+
+def clip3(mat, vmin, vmid, vmax):
+    assert vmin < vmid
+    assert vmid < vmax
+    v1 =  clip20(mat, vmin, vmid)
+    v2 =  1.0 - clip20(mat, vmid, vmax)
+    return v1 + v2
+
+
 #nframes = 15
 dt = 0.02/1.0
 cycles = 1.0
@@ -67,7 +103,12 @@ for i in range(nframes):
 
         v = (np.sin(mxx*RADIANS*sp_frq + phix)+np.cos(myy*RADIANS*sp_frq + phiy))
         #v = (np.sin(xx*RADIANS*sp_frq + phix) **2 +np.cos(yy*RADIANS*sp_frq + phiy) **2)-1.0
-        v = np.clip(v, 0,1)
+        #v = np.clip(v, 0,1)
+        #v = clip2(v,0.5,0.7)
+        #v = clip3(v,0.5,0.55,0.6)
+        v = clip20(v, 0.5,0.8)
+        #print(np.min(np.min(v)),  np.max(np.max(v)))
+        #v = np.clip(np.abs(v*2), 0.5,0.7)
         image[i, :,:, rgbi] = np.floor(v*255)
 
 imageio.mimsave('./anim1.gif', image, duration=dt)
