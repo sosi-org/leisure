@@ -46,8 +46,7 @@ def clip2(mat, vmin, vmax):
     v = v / (vmax - vmin)
     return v
 
-def clip20(mat, vmin, vmax):
-    assert vmin < vmax
+def clip20(mat, vlist):
 
     """
     v1 =  (mat >= vmin) * mat + \
@@ -58,20 +57,33 @@ def clip20(mat, vmin, vmax):
     #v = v1 + v2
     """
 
-    msk = np.logical_and(mat >= vmin, mat < vmax)
-    v =  msk * mat
+    last_max = -1000
 
-    v = v - vmin
-    v = v / (vmax - vmin)
+    master_mask = 0
+    # [vmin, vmax]
+    for vmin, vmax in vlist:
+
+        assert vmin < vmax
+        assert last_max < vmin
+
+
+        msk = np.logical_and(mat >= vmin, mat < vmax)
+        v =  msk * mat
+
+        v = v - vmin
+        v = v / (vmax - vmin)
+
+        master_mask = master_mask + msk
+        last_max = vmax
 
     #return v * msk
-    return msk
+    return master_mask
 
 def clip3(mat, vmin, vmid, vmax):
     assert vmin < vmid
     assert vmid < vmax
-    v1 =  clip20(mat, vmin, vmid)
-    v2 =  1.0 - clip20(mat, vmid, vmax)
+    v1 =  clip20(mat, [(vmin, vmid)])
+    v2 =  1.0 - clip20(mat, [(vmid, vmax)])
     return v1 + v2
 
 
@@ -127,7 +139,8 @@ for i in range(nframes):
         #v = np.clip(v, 0,1)
         #v = clip2(v,0.5,0.7)
         #v = clip3(v,0.5,0.55,0.6)
-        v = clip20(v, 0.5,0.8)
+        v = clip20(v, [(0.5,0.8)])
+        #v = clip20(v, [(-0.3,-0.1), (0.5,0.8)])
         #print(np.min(np.min(v)),  np.max(np.max(v)))
         #v = np.clip(np.abs(v*2), 0.5,0.7)
 
