@@ -139,8 +139,8 @@ for i in range(nframes):
         #v = np.clip(v, 0,1)
         #v = clip2(v,0.5,0.7)
         #v = clip3(v,0.5,0.55,0.6)
-        v = clip20(v, [(0.5,0.8)])
-        #v = clip20(v, [(-0.3,-0.1), (0.5,0.8)])
+        #v = clip20(v, [(0.5,0.8)])
+        v = clip20(v, [(-2.5,-1.7), (-0.3,-0.1), (0.5,0.8)])
         #print(np.min(np.min(v)),  np.max(np.max(v)))
         #v = np.clip(np.abs(v*2), 0.5,0.7)
 
