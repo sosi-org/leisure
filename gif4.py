@@ -88,7 +88,7 @@ def clip3(mat, vmin, vmid, vmax):
 
 
 #nframes = 15
-dt = 0.02/1.0*2
+dt = 0.02/1.0*2.0/4.0
 tcycles = 1.0
 LOOP_BACKnFORTH = False
 DECIMATION = 2
