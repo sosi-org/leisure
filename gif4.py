@@ -88,19 +88,21 @@ def clip3(mat, vmin, vmid, vmax):
 
 
 #nframes = 15
-dt = 0.02/1.0
-cycles = 1.0
+dt = 0.02/1.0*2
+tcycles = 1.0
 LOOP_BACKnFORTH = False
 DECIMATION = 2
+xcycles = 2
+
 #resolution
-rx, ry = (100, 100)
+rx, ry = (100*2, 100*2)
 nx, ny = (rx*DECIMATION, ry*DECIMATION)
 
-nframes = int(cycles/dt + 0.00000001)
+nframes = int(tcycles/dt + 0.00000001)
 print(nframes, "frames")
 
-x0 = np.linspace(0, 1, nx)
-y0 = np.linspace(0, 1, ny)
+x0 = np.linspace(0, xcycles, nx)
+y0 = np.linspace(0, xcycles, ny)
 
 xx,yy = np.meshgrid(x0, y0)
 image = np.zeros((nframes, rx,ry,3), dtype=np.uint8)
@@ -133,6 +135,7 @@ for i in range(nframes):
         phixy = np.arctan2(xx-0.5,yy-0.5)
         #mxx, myy = xx + np.sin(phixy) , yy + np.cos(phixy)
         mxx, myy = xx + np.sin((xx+t)*RADIANS) * 0.1 , yy #+ np.cos(phixy)
+        #  + (3*yy*yy+1)
 
         v = (np.sin(mxx*RADIANS*sp_frq + phix)+np.cos(myy*RADIANS*sp_frq + phiy*0))
         #v = (np.sin(xx*RADIANS*sp_frq + phix) **2 +np.cos(yy*RADIANS*sp_frq + phiy) **2)-1.0
