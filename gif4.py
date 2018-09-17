@@ -27,4 +27,7 @@ image = np.zeros((nframes, 100,100,3), dtype=np.uint8)
 for i in range(nframes):
     image[i, 10:20+i,10:20+i,1] = 120
 
-imageio.mimsave('./anim1.gif', image)
+imageio.mimsave('./anim1.gif', image, duration=0.02)
+
+
+#imageio.mimsave(exportname, frames, format='GIF', duration=5)
