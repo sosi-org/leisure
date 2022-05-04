@@ -1,4 +1,6 @@
 
+Some personal mini-projects just for fun.
+
 Projects for fun / hobby / leisure activity (not "useful" stuff)
 
 Here:
